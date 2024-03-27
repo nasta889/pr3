@@ -1,0 +1,201 @@
+1.using System;
+
+// Клас, що представляє книгу
+class Book
+{
+    // Поля класу
+    private readonly Title title; // Назва книги
+    private Author author; // Автор
+    private Content content; // Зміст
+
+    // Конструктор, що ініціалізує назву книги
+    public Book(string bookTitle)
+    {
+        title = new Title(bookTitle); // Ініціалізуємо назву книги
+    }
+
+    // Властивість для доступу до автора книги
+    public Author Author
+    {
+        get { return author; }
+        set { author = value; }
+    }
+
+    // Властивість для доступу до змісту книги
+    public Content Content
+    {
+        get { return content; }
+        set { content = value; }
+    }
+
+    // Метод для виведення на екран назви книги, автора та змісту
+    public void Show()
+    {
+        Console.ForegroundColor = ConsoleColor.Red; // Встановлюємо колір для назви книги
+        title.Show(); // Викликаємо метод Show() класу Title
+        Console.ForegroundColor = ConsoleColor.Blue; // Встановлюємо колір для автора
+        author.Show(); // Викликаємо метод Show() класу Author
+        Console.ForegroundColor = ConsoleColor.Green; // Встановлюємо колір для змісту
+        content.Show(); // Викликаємо метод Show() класу Content
+        Console.ResetColor(); // Скидаємо колір консолі на стандартний
+    }
+}
+
+// Клас, що представляє назву книги
+class Title
+{
+    // Поле з назвою книги
+    private readonly string bookTitle;
+
+    // Конструктор, що ініціалізує назву книги
+    public Title(string title)
+    {
+        bookTitle = title;
+    }
+
+    // Метод для виведення на екран назви книги
+    public void Show()
+    {
+        Console.WriteLine($"Title: {bookTitle}");
+    }
+}
+
+// Клас, що представляє автора книги
+class Author
+{
+    // Поле з ім'ям автора
+    private string authorName;
+
+    // Властивість для доступу до імені автора
+    public string Name
+    {
+        get { return authorName; }
+        set { authorName = value; }
+    }
+
+    // Метод для виведення на екран імені автора
+    public void Show()
+    {
+        Console.WriteLine($"Author: {authorName}");
+    }
+}
+
+// Клас, що представляє зміст книги
+class Content
+{
+    // Поле змісту книги
+    private string bookContent;
+
+    // Властивість для доступу до змісту книги
+    public string ContentValue
+    {
+        get { return bookContent; }
+        set { bookContent = value; }
+    }
+
+    // Метод для виведення на екран змісту книги
+    public void Show()
+    {
+        Console.WriteLine($"Content: {bookContent}");
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Створення книги
+        Book myBook = new Book("Introduction to Programming");
+
+        // Додавання автора
+        myBook.Author = new Author { Name = "John Doe" };
+
+        // Додавання змісту
+        myBook.Content = new Content { ContentValue = "This book introduces basic programming concepts." };
+
+        // Виведення книги на екран
+        myBook.Show();
+    }
+}
+2.using System;
+
+// Клас, що представляє точку
+class Point
+{
+    // Поля класу
+    private int x;
+    private int y;
+    private string label;
+
+    // Конструктор класу Point
+    public Point(int x, int y, string label)
+    {
+        // Ініціалізуємо поля значеннями аргументів конструктора
+        this.x = x;
+        this.y = y;
+        this.label = label;
+    }
+
+    // Властивість для доступу до координати x (тільки для читання)
+    public int X => x;
+
+    // Властивість для доступу до координати y (тільки для читання)
+    public int Y => y;
+
+    // Властивість для доступу до мітки точки (тільки для читання)
+    public string Label => label;
+}
+
+// Клас, що представляє багатокутник
+class Figure
+{
+    // Масив точок, що визначають багатокутник
+    private Point[] points;
+
+    // Конструктор класу Figure, що приймає від 3 до 5 аргументів типу Point
+    public Figure(params Point[] points)
+    {
+        if (points.Length < 3 || points.Length > 5)
+        {
+            throw new ArgumentException("A figure must have 3 to 5 points.");
+        }
+        this.points = points;
+    }
+
+    // Метод, що розраховує довжину сторони багатокутника
+    private double LengthSide(Point A, Point B)
+    {
+        // Використовуємо теорему Піфагора для розрахунку відстані між двома точками
+        return Math.Sqrt(Math.Pow(B.X - A.X, 2) + Math.Pow(B.Y - A.Y, 2));
+    }
+
+    // Метод, що розраховує периметр багатокутника
+    public void PerimeterCalculator()
+    {
+        double perimeter = 0;
+        for (int i = 0; i < points.Length - 1; i++)
+        {
+            perimeter += LengthSide(points[i], points[i + 1]); // Додаємо довжину кожної сторони
+        }
+        perimeter += LengthSide(points[points.Length - 1], points[0]); // Додаємо довжину останньої сторони
+        Console.WriteLine($"Perimeter: {perimeter}");
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Створюємо точки, що визначають багатокутник
+        Point A = new Point(0, 0, "A");
+        Point B = new Point(0, 4, "B");
+        Point C = new Point(3, 4, "C");
+        Point D = new Point(3, 0, "D");
+
+        // Створюємо багатокутник з використанням точок
+        Figure figure = new Figure(A, B, C, D);
+
+        // Розраховуємо та виводимо периметр багатокутника
+        figure.PerimeterCalculator();
+    }
+}
